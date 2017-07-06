@@ -55,4 +55,15 @@ return Observable.throw(error);
     .delete(`${this.api}/book/${isbn}`)
     .catch(this.errorHandler);
   }
+
+  getAllSearch(searchTerm: string){
+        return this.http
+    .get(`${this.api}/books/search/${searchTerm}`)
+    .retry(3)
+    .map(response => response.json())
+    .map(rawBooks => rawBooks
+      .map(rawBook => BookFactory.fromObject(rawBook))
+    )
+    .catch(this.errorHandler);
+  }
 }
